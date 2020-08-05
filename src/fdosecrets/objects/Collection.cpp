@@ -210,7 +210,7 @@ namespace FdoSecrets
         return prompt;
     }
 
-    DBusReturn<const QList<Item*>> Collection::searchItems(const StringStringMap& attributes)
+    DBusReturn<const QList<Item*>> Collection::searchItems(const StringStringMap& attributes, bool needUnlock)
     {
         auto ret = ensureBackend();
         if (ret.isError()) {
@@ -218,6 +218,11 @@ namespace FdoSecrets
         }
         ret = ensureUnlocked();
         if (ret.isError()) {
+            if(needUnlock){
+                Q_ASSERT(m_backend);
+                service()->doUnlockDatabaseInDialogUntillUserAction(m_backend);
+                return searchItems(attributes, false);
+            }
             // searchItems should work, whether `this` is locked or not.
             // however, we can't search items the same way as in gnome-keying,
             // because there's no database at all when locked.
@@ -257,6 +262,10 @@ namespace FdoSecrets
             items << m_entryToItem.value(entry);
         }
         return items;
+    }
+
+    DBusReturn<const QList<Item*>> Collection::searchItems(const StringStringMap& attributes){
+        return searchItems(attributes, true);
     }
 
     EntrySearcher::SearchTerm Collection::attributeToTerm(const QString& key, const QString& value)

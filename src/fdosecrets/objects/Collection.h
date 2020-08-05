@@ -55,6 +55,7 @@ namespace FdoSecrets
 
         DBusReturn<PromptBase*> deleteCollection();
         DBusReturn<const QList<Item*>> searchItems(const StringStringMap& attributes);
+        DBusReturn<const QList<Item*>> searchItems(const StringStringMap& attributes, bool needUnlock);
         DBusReturn<Item*>
         createItem(const QVariantMap& properties, const SecretStruct& secret, bool replace, PromptBase*& prompt);
 

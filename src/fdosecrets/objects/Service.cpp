@@ -489,4 +489,9 @@ namespace FdoSecrets
         m_databases->unlockDatabaseInDialog(dbWidget, DatabaseOpenDialog::Intent::None);
     }
 
+     void Service::doUnlockDatabaseInDialogUntillUserAction(DatabaseWidget* dbWidget)
+    {
+        m_databases->unlockDatabaseInDialogWaitUntillUserAction(dbWidget, DatabaseOpenDialog::Intent::None, dbWidget->database()->filePath());
+    }
+
 } // namespace FdoSecrets

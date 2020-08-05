@@ -117,7 +117,7 @@ namespace FdoSecrets
          * @param dbWidget
          */
         void doUnlockDatabaseInDialog(DatabaseWidget* dbWidget);
-
+        void doUnlockDatabaseInDialogUntillUserAction(DatabaseWidget* dbWidget);
     private slots:
         void dbusServiceUnregistered(const QString& service);
         void ensureDefaultAlias();

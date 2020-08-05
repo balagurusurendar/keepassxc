@@ -680,6 +680,26 @@ void DatabaseTabWidget::unlockDatabaseInDialog(DatabaseWidget* dbWidget,
     m_databaseOpenDialog->activateWindow();
 }
 
+void DatabaseTabWidget::unlockDatabaseInDialogWaitUntillUserAction(DatabaseWidget* dbWidget,
+                                               DatabaseOpenDialog::Intent intent,
+                                               const QString& filePath)
+{
+    m_databaseOpenDialog->setTargetDatabaseWidget(dbWidget);
+    m_databaseOpenDialog->setIntent(intent);
+    m_databaseOpenDialog->setFilePath(filePath);
+
+#ifdef Q_OS_MACOS
+    if (intent == DatabaseOpenDialog::Intent::AutoType || intent == DatabaseOpenDialog::Intent::Browser) {
+        macUtils()->raiseOwnWindow();
+        Tools::wait(200);
+    }
+#endif
+
+    m_databaseOpenDialog->exec();
+    // m_databaseOpenDialog->raise();
+    // m_databaseOpenDialog->activateWindow();
+}
+
 /**
  * This function relock the pending database when autotype has been performed successfully
  * A database is marked as pending when it's unlocked after a global Auto-Type invocation
