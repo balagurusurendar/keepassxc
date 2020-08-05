@@ -695,9 +695,12 @@ void DatabaseTabWidget::unlockDatabaseInDialogWaitUntillUserAction(DatabaseWidge
     }
 #endif
 
-    m_databaseOpenDialog->exec();
-    // m_databaseOpenDialog->raise();
-    // m_databaseOpenDialog->activateWindow();
+    m_databaseOpenDialog->show();
+    m_databaseOpenDialog->raise();
+    m_databaseOpenDialog->activateWindow();
+    QEventLoop loop;
+    connect(m_databaseOpenDialog.data(), &QDialog::finished, & loop, &QEventLoop::quit);
+    loop.exec();
 }
 
 /**
